@@ -20,6 +20,8 @@ public abstract class Robot {
     public DcMotor backLeft;
     public DcMotor backRight;
     public DcMotor pulley;
+    public DcMotor lift;
+
 
 
     // The IMU sensor object
@@ -67,14 +69,16 @@ public abstract class Robot {
         backLeft = opMode.hardwareMap.get(DcMotor.class, "bl");
         backRight = opMode.hardwareMap.get(DcMotor.class, "br");
         pulley = opMode.hardwareMap.get(DcMotor.class, "pulley");
-
+        lift = opMode.hardwareMap.get(DcMotor.class, "lift");
 
         //sets direction of the motors
-        frontLeft.setDirection(DcMotor.Direction.FORWARD);
+        frontLeft.setDirection(DcMotor.Direction.REVERSE);
         frontRight.setDirection(DcMotor.Direction.FORWARD);
-        backLeft.setDirection(DcMotor.Direction.FORWARD);
+        backLeft.setDirection(DcMotor.Direction.REVERSE);
         backRight.setDirection(DcMotor.Direction.FORWARD);
         pulley.setDirection(DcMotor.Direction.FORWARD);
+        lift.setDirection(DcMotor.Direction.FORWARD);
+
 
         //FROM ftc samples
         //sets zero power behavior of the motors
@@ -83,6 +87,7 @@ public abstract class Robot {
         backLeft.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         backRight.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         pulley.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        lift.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
         BNO055IMU.Parameters parameters = new BNO055IMU.Parameters();
         parameters.angleUnit = BNO055IMU.AngleUnit.DEGREES;
