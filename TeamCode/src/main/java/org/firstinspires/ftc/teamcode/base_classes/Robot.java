@@ -4,9 +4,13 @@ import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.hardware.bosch.JustLoggingAccelerationIntegrator;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.Range;
 
 import org.firstinspires.ftc.robotcore.external.navigation.Acceleration;
+import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
+import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
+import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
 import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
 
 public abstract class Robot {
@@ -14,15 +18,15 @@ public abstract class Robot {
 
     OpMode opMode;
 
-    //Declares motors
+    //Declares motors and servos
     public DcMotor frontLeft;
     public DcMotor frontRight;
     public DcMotor backLeft;
     public DcMotor backRight;
     public DcMotor pulley;
     public DcMotor lift;
-
-
+    Servo leftHand;
+    Servo rightHand;
 
     // The IMU sensor object
     public BNO055IMU imu;
@@ -63,13 +67,17 @@ public abstract class Robot {
      * Initializes telemetry, motors, servos
      */
     public void init() {
-        //initializes the motors
+        //initializes motors
         frontLeft = opMode.hardwareMap.get(DcMotor.class, "fl");
         frontRight = opMode.hardwareMap.get(DcMotor.class, "fr");
         backLeft = opMode.hardwareMap.get(DcMotor.class, "bl");
         backRight = opMode.hardwareMap.get(DcMotor.class, "br");
         pulley = opMode.hardwareMap.get(DcMotor.class, "pulley");
         lift = opMode.hardwareMap.get(DcMotor.class, "lift");
+
+        //initializes servos
+        leftHand = opMode.hardwareMap.get(Servo.class, "left_hand");
+        rightHand = opMode.hardwareMap.get(Servo.class, "right_hand");
 
         //sets direction of the motors
         frontLeft.setDirection(DcMotor.Direction.REVERSE);
@@ -78,7 +86,6 @@ public abstract class Robot {
         backRight.setDirection(DcMotor.Direction.FORWARD);
         pulley.setDirection(DcMotor.Direction.FORWARD);
         lift.setDirection(DcMotor.Direction.FORWARD);
-
 
         //FROM ftc samples
         //sets zero power behavior of the motors
@@ -120,7 +127,6 @@ public abstract class Robot {
      * @param power percentage of full power given to each motor
      */
     public void strafeLeft(double power) {
-        //@TODO: figure out if there should be a minimum power at 0, since if power < 0, robot will move right
         power = Range.clip(power, -1.0, 1.0);
 
         frontLeft.setPower(-power);
@@ -175,5 +181,31 @@ public abstract class Robot {
      */
     public void rotateCounter(double power) {
         rotateClockwise(-power);
+    }
+
+    public void raiseLift(double power) {
+        power = Range.clip(power, -1.0, 1.0);
+        lift.setPower(power);
+    }
+
+    public void lowerLift(double power) {
+        raiseLift(-power);
+    }
+
+    public void stopLift() {
+        lift.setPower(0);
+    }
+
+    public void raisePulley(double power) {
+        power = Range.clip(power, -1.0, 1.0);
+        pulley.setPower(power);
+    }
+
+    public void lowerPulley(double power) {
+        raisePulley(-power);
+    }
+
+    public void stopPulley() {
+        pulley.setPower(0);
     }
 }

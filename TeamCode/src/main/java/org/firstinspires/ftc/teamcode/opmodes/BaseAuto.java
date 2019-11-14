@@ -157,7 +157,7 @@ public class BaseAuto extends LinearOpMode {
                 case 2:
                     if (Math.abs(robotX - this.getTargetX()) <= this.getStoneXTolerance()) {
                         this.setStageNum(3);
-                        this.getRobot().driveStraight(1);
+                        this.getRobot().driveForwards(1);
                     } else {
                         if (robotX > this.getTargetX() && this.getRobot().getLeftPower() * alliance > 0) {
                             this.getRobot().strafeRight(alliance);
@@ -170,7 +170,7 @@ public class BaseAuto extends LinearOpMode {
                         this.getRobot().stopDriving();
                         // TODO: grab stone
                         this.setStageNum(4);
-                        this.getRobot().driveStraight(-1);
+                        this.getRobot().driveForwards(-1);
                     }
                 case 4:
                     if (robotY * alliance >= this.getSafeDistance() + 24) {

@@ -9,5 +9,5 @@ Left/Right Shoulders: for moving lift up and down (left = down, right = up)
 
 Gamepad2 (currently all on Gamepad1):
 DPad:
-    Up/Down: For moving slides up and down
-    Right/Left shoulders: For moving servos in and out (left = out, right = in)
+    Up/Down: For moving slides (pulley) up and down
+    Right/Left triggers: For moving hands in and out (left = out, right = in)

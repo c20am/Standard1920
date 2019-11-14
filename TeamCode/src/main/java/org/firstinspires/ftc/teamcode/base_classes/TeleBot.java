@@ -34,7 +34,6 @@ public class TeleBot extends Robot {
         boolean rightBumper = opMode.gamepad1.right_bumper;
 
 
-
         //the 'radius' of the circle this represents
         double rad = 1;
 
@@ -51,84 +50,40 @@ public class TeleBot extends Robot {
         double[] powerValues;
 
         if ((Math.abs(leftX) > dead) || (Math.abs(leftY) > dead) || Math.abs(rightX) > dead) {
-//            //if the left stick is being used
-//            strafeLeftPow = sin45 * ((leftX - leftY));
-//            strafeRightPow = sin45 * ((leftX + leftY));
-//
-//            //either fully rotating one way or another, positive (1) represents clockwise
-//            rotPow = (rightX > 0) ? (1) : (-1);
-//
-//            //sets each motor's power to combination of strafe and rotate
-//            powerValues = new double[]{strafeLeftPow + rotPow, strafeRightPow - rotPow,
-//                    strafeLeftPow - rotPow, strafeRightPow + rotPow};
-//
-//            //from Davis's code: rescale values out of the highest power in the array
-//            double maximumPower = 0;
-//
-//            for (int i = 0; i < powerValues.length; i++) {
-//                if (Math.abs(powerValues[i]) > maximumPower) {
-//                    maximumPower = powerValues[i];
-//                }
-//            }
-//
-//            if (maximumPower != 0) {
-//                for (int i = 0; i < powerValues.length; i++) {
-//                    powerValues[i] = powerValues[i] / Math.abs(maximumPower);
-//                }
-//            }
-//
-//            frontLeft.setPower(Range.clip(powerValues[0], -1.0, 1.0));
-//            frontRight.setPower(Range.clip(powerValues[0], -1.0, 1.0));
-//            backLeft.setPower(Range.clip(powerValues[0], -1.0, 1.0));
-//            backRight.setPower(Range.clip(powerValues[0], -1.0, 1.0));
-            if (leftX > leftY && leftX > 0) {
 
-            } else if (leftX > leftY && leftX < 0){
-                frontLeft.setPower(-1);
-                frontRight.setPower(1);
-                backLeft.setPower(1);
-                backRight.setPower(-1);
-            } else if (leftY > leftX && leftY > 0) {
-                frontLeft.setPower(1);
-                frontRight.setPower(-1);
-                backLeft.setPower(-1);
-                backRight.setPower(1);
+            //Move robot according to left stick
+            if (Math.abs(leftX) < leftY) {
+                driveForwards(.75);
+            } else if (Math.abs(leftY) < leftX) {
+                strafeRight(.75);
+            } else if (-Math.abs(leftY) > leftX) {
+                strafeLeft(.75);
+            } else if (-Math.abs(leftX) > leftY) {
+                driveBackwards(.75);
             } else {
-                frontLeft.setPower(-1);
-                frontRight.setPower(-1);
-                backLeft.setPower(-1);
-                backRight.setPower(-1);
+                stopDriving();
             }
 
-        } else {
-            frontLeft.setPower(0);
-            frontRight.setPower(0);
-            backLeft.setPower(0);
-            backRight.setPower(0);
+            //Powers pulley's motor according to dpad
+            if (dpadUp) {
+                raisePulley(.5);
+            } else if (dpadDown) {
+                lowerPulley(.5);
+            } else {
+                stopPulley();
+            }
+
+            //Powers lift's motor according to shoulder buttons
+            if (rightBumper) {
+                raiseLift(.8);
+            } else if (leftBumper) {
+                lowerLift(.8);
+            } else {
+                stopLift();
+            }
+
+            //TODO: Add servos/hands movement when we figure out where 0 degrees is on the servos
+
         }
-
-        //Powers pulley's motor according to dpad
-        if (dpadUp) {
-            pulley.setPower(.5);
-        } else if (dpadDown) {
-            pulley.setPower(-.5);
-        } else {
-            pulley.setPower(0);
-        }
-
-        //Powers lift's motor according to shoulder buttons
-        if (rightBumper) {
-            lift.setPower(.8);
-        } else if (leftBumper) {
-            lift.setPower(-.8);
-        } else {
-            lift.setPower(0);
-        }
-
-
-    }
-
-    public void setPower() {
-
     }
 }
