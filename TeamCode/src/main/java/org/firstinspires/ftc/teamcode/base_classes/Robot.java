@@ -105,12 +105,7 @@ public abstract class Robot {
         parameters.accelerationIntegrationAlgorithm = new JustLoggingAccelerationIntegrator();
     }
 
-    /**
-     * Turns all the wheels in the same direction to move uniformly forwards or backwards in a straight line
-     *
-     * @param power percentage of full power given to each motor
-     */
-    public void driveStraight(double power) {
+    public void driveForwards(double power) {
         power = Range.clip(power, -1.0, 1.0);
 
         frontLeft.setPower(power);
@@ -121,11 +116,17 @@ public abstract class Robot {
         this.setLeftPower(0);
     }
 
-    /**
-     * Strafes left
-     *
-     * @param power percentage of full power given to each motor
-     */
+    public void driveBackwards(double power) {
+        power = Range.clip(power, -1.0, 1.0);
+
+        frontLeft.setPower(power);
+        frontRight.setPower(power);
+        backLeft.setPower(power);
+        backRight.setPower(power);
+        this.setForwardPower(power);
+        this.setLeftPower(0);
+    }
+
     public void strafeLeft(double power) {
         power = Range.clip(power, -1.0, 1.0);
 
@@ -137,18 +138,10 @@ public abstract class Robot {
         this.setLeftPower(power);
     }
 
-    /**
-     * Strafes right
-     *
-     * @param power percentage of full power given to each motor
-     */
     public void strafeRight(double power) {
         strafeLeft(-power);
     }
 
-    /**
-     * Stops the wheels
-     */
     public void stopDriving() {
         frontLeft.setPower(0);
         frontRight.setPower(0);
@@ -158,11 +151,6 @@ public abstract class Robot {
         this.setLeftPower(0);
     }
 
-    /**
-     * Rotates clockwise
-     *
-     * @param power percentage of full power given to each motor
-     */
     public void rotateClockwise(double power) {
         power = Range.clip(power, -1.0, 1.0);
 
@@ -174,11 +162,6 @@ public abstract class Robot {
         this.setLeftPower(0);
     }
 
-    /**
-     * Rotates counterclockwise
-     *
-     * @param power percentage of full power given to each motor
-     */
     public void rotateCounter(double power) {
         rotateClockwise(-power);
     }

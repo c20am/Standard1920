@@ -5,7 +5,6 @@ import com.qualcomm.robotcore.util.Range;
 
 public class TeleBot extends Robot {
 
-
     //under this number, input won't be taken into account
     public double dead = .13;
 
@@ -32,7 +31,6 @@ public class TeleBot extends Robot {
         boolean dpadDown = opMode.gamepad1.dpad_down;
         boolean leftBumper = opMode.gamepad1.left_bumper;
         boolean rightBumper = opMode.gamepad1.right_bumper;
-
 
         //the 'radius' of the circle this represents
         double rad = 1;
