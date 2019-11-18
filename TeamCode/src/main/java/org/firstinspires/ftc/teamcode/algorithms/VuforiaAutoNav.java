@@ -143,7 +143,6 @@ public class VuforiaAutoNav {
     private float phoneXRotate = 0;
     private float phoneYRotate = 0;
     private float phoneZRotate = 0;
-    //TODO: check if the phone has a z rotation, and, if it does, update this value
     private ArrayList<Stone> Stones = new ArrayList<>();
     private HardwareMap hardwareMap;
     List<VuforiaTrackable> allTrackables = new ArrayList<VuforiaTrackable>();
@@ -605,10 +604,11 @@ public class VuforiaAutoNav {
 
         // Next, translate the camera lens to where it is on the robot.
         // In this example, it is centered (left to right), but forward of the middle of the robot, and above ground level.
-        // TODO: update with actual camera placement
-        final float CAMERA_FORWARD_DISPLACEMENT = 4.0f * mmPerInch;   // eg: Camera is 4 Inches in front of robot-center
-        final float CAMERA_VERTICAL_DISPLACEMENT = 8.0f * mmPerInch;   // eg: Camera is 8 Inches above ground
-        final float CAMERA_LEFT_DISPLACEMENT = 0;     // eg: Camera is ON the robot's center line
+        // the robot 15.68 is inches wide and 16.25 inches long (measured from wheel to wheel)
+        // the camera's lens is 0.415 inches from the front of the 3d printed mount
+        final float CAMERA_FORWARD_DISPLACEMENT = 2.035f * mmPerInch;   // eg: Camera is 2.035 Inches in front of robot-center
+        final float CAMERA_VERTICAL_DISPLACEMENT = 9.4f * mmPerInch;   // Camera is 9.4 Inches above ground
+        final float CAMERA_LEFT_DISPLACEMENT = 0.215f * mmPerInch;  // Camera is 0.215 Inches to the left of robot-center
 
         OpenGLMatrix robotFromCamera = OpenGLMatrix
                 .translation(CAMERA_FORWARD_DISPLACEMENT, CAMERA_LEFT_DISPLACEMENT, CAMERA_VERTICAL_DISPLACEMENT)

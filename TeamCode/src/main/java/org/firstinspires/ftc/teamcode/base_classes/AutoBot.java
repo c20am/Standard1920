@@ -14,8 +14,8 @@ public class AutoBot extends Robot {
     //stores the value of sin(45°), or sin(pi/4)
     public double sin45 = Math.sqrt(2) / 2;
     public VuforiaAutoNav nav;
-    public float robotWidth = 18; // robot width in inches
-    public float robotLength = 18; // robot length in inches
+    public float robotWidth = 15.68f; // robot width in inches
+    public float robotLength = 16.25f; // robot length in inches
 
     public float getRobotWidth() {
         return robotWidth;
