@@ -81,8 +81,11 @@ import static org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocaliz
  * z axis goes through center of field; up is positive
  * no clue yet which direction is zero degrees and which direction is positive degrees
  * -1 is red alliance, 1 is blue alliance
+ * <p>
+ * To get the x and y of a stone, call getStoneX and getStoneY respectively
+ * <p>
+ * To get the number, x, and y of a sky stone, call getSkyStonePosition, getSkyStoneX, and getSkyStoneY, respectively
  */
-
 public class VuforiaAutoNav {
 
     /**
