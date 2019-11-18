@@ -15,14 +15,12 @@ import org.firstinspires.ftc.teamcode.enums.Alliance;
  * Untested, so timing is arbitrary
  */
 
-@Autonomous(name = "Simple Auto", group = "Auto")
 public abstract class SimpleAutoMain extends LinearOpMode {
 
     public abstract Alliance getAlliance();
 
     public AutoBot robot = new AutoBot(this);
     public ElapsedTime runtime = new ElapsedTime();
-
     @Override
     public void runOpMode() {
 
