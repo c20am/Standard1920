@@ -15,7 +15,6 @@ import org.firstinspires.ftc.teamcode.enums.Alliance;
  * Untested, so timing is arbitrary
  */
 
-@Autonomous(name = "Simple Auto", group = "Auto")
 public abstract class SimpleAutoMain extends LinearOpMode {
 
     public abstract Alliance getAlliance();
