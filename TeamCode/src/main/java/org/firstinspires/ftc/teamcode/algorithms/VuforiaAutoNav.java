@@ -56,9 +56,10 @@ import static org.firstinspires.ftc.robotcore.external.navigation.AxesReference.
 import static org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer.CameraDirection.BACK;
 
 /**
- * This 2019-2020 OpMode illustrates the basics of using the Vuforia localizer to determine
- * positioning and orientation of robot on the SKYSTONE FTC field.
- * The code is structured as a LinearOpMode
+ * This class uses the Vuforia localizer to determine positioning and orientation of robot on the SKYSTONE FTC field.
+ * In order to use an object of this class, it must be initialized with the robot's hardwareMap as
+ * a parameter. The method initView() must then be called. Because the view does not automatically
+ * update, the method updateView() must be called in the while active loop.
  * <p>
  * When images are located, Vuforia is able to determine the position and orientation of the
  * image relative to the camera.  This sample code then combines that information with a
@@ -73,16 +74,13 @@ import static org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocaliz
  * <p>
  * A final calculation then uses the location of the camera on the robot to determine the
  * robot's location and orientation on the field.
- *
- * @see VuforiaLocalizer
- * @see VuforiaTrackableDefaultListener
- * see  skystone/doc/tutorial/FTC_FieldCoordinateSystemDefinition.pdf
  * <p>
- * Use Android Studio to Copy this Class, and Paste it into your team's code folder with a new name.
- * Remove or comment out the @Disabled line to add this opmode to the Driver Station OpMode list.
- * <p>
- * IMPORTANT: In order to use this OpMode, you need to obtain your own Vuforia license key as
- * is explained below.
+ * For coordinate system: origin is on floor at center of field
+ * x axis is perp. to y axis; building zone is positive and loading zone is negative
+ * y axis runs through bridges; blue side is positive and red side is negative
+ * z axis goes through center of field; up is positive
+ * no clue yet which direction is zero degrees and which direction is positive degrees
+ * -1 is red alliance, 1 is blue alliance
  */
 
 public class VuforiaAutoNav {
