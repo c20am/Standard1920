@@ -21,7 +21,7 @@ public abstract class SimpleAutoMain extends LinearOpMode {
 
     public AutoBot robot = new AutoBot(this);
     public ElapsedTime runtime = new ElapsedTime();
-
+    @Override
     public void runOpMode() {
 
         telemetry.addData("Status", "Initialized");
