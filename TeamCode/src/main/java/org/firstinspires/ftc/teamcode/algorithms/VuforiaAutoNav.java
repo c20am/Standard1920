@@ -35,6 +35,7 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
 import org.firstinspires.ftc.robotcore.external.ClassFactory;
+import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.firstinspires.ftc.robotcore.external.matrices.OpenGLMatrix;
 import org.firstinspires.ftc.robotcore.external.matrices.VectorF;
@@ -89,7 +90,7 @@ import static org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocaliz
 public class VuforiaAutoNav {
 
     /**
-     * TODO: add automatic alliance detection
+     *
      */
     private static final String TFOD_MODEL_ASSET = "Skystone.tflite";
     private static final String LABEL_FIRST_ELEMENT = "Stone";
@@ -146,25 +147,17 @@ public class VuforiaAutoNav {
     private float phoneZRotate = 0;
     private ArrayList<Stone> Stones = new ArrayList<>();
     private HardwareMap hardwareMap;
+    private Telemetry telemetry;
     List<VuforiaTrackable> allTrackables = new ArrayList<VuforiaTrackable>();
     private int[] skyStonePositions = {-1, -1};
 
-
-    /*
-     * For coordinate system: origin is on floor at center of field
-     * x axis is perp. to y axis; building zone is positive and loading zone is negative
-     * y axis runs through bridges; blue side is positive and red side is negative
-     * z axis goes through center of field; up is positive
-     * no clue yet which direction is zero degrees and which direction is positive degrees
-     *
-     *
-     */
 
     private float robotX = 0;
     private float robotY = 0;
     private float robotZ = 0;
     private float robotAngle = 0;
     private int alliance = 0;
+    private boolean allianceDetection = true; // determines whether the robot will automatically detect the alliance it is on
 
     /**
      * gets the alliance
@@ -200,6 +193,24 @@ public class VuforiaAutoNav {
      */
     public void setHardwareMap(HardwareMap hardwareMap) {
         this.hardwareMap = hardwareMap;
+    }
+
+    /**
+     * gets the telemetry
+     *
+     * @return telemetry
+     */
+    public Telemetry getTelemetryMap() {
+        return telemetry;
+    }
+
+    /**
+     * sets the telemetry
+     *
+     * @param telemetry telemetry
+     */
+    public void setTelemetry(Telemetry telemetry) {
+        this.telemetry = telemetry;
     }
 
     /**
@@ -432,12 +443,67 @@ public class VuforiaAutoNav {
     }
 
     /**
+     * gets allianceDetection, which determines whether the robot should detect its alliance
+     *
+     * @return allianceDetection
+     */
+    public boolean isAllianceDetection() {
+        return allianceDetection;
+    }
+
+    /**
+     * gets allianceDetection, which determines whether the robot should detect its alliance
+     *
+     * @return allianceDetection
+     */
+    public boolean allianceDetectionOn() {
+        return allianceDetection;
+    }
+
+    /**
+     * sets allianceDetection, which determines whether the robot should detect its alliance
+     *
+     * @param allianceDetection
+     */
+    public void setAllianceDetection(boolean allianceDetection) {
+        this.allianceDetection = allianceDetection;
+    }
+
+    /**
+     * sets allianceDetection to true, which determines whether the robot should detect its alliance
+     */
+    public void turnOnAllianceDetection() {
+        this.allianceDetection = true;
+    }
+
+    /**
+     * sets allianceDetection to false, which determines whether the robot should detect its alliance
+     */
+    public void turnOffAllianceDetection() {
+        this.allianceDetection = false;
+    }
+
+    /**
      * Because this class is not an opmode, the opmode using it needs to feed in its hardware map.
      *
      * @param hardwareMap
      */
     public VuforiaAutoNav(HardwareMap hardwareMap) {
         this.hardwareMap = hardwareMap;
+        this.initView();
+    }
+
+    /**
+     * Because this class is not an opmode, the opmode using it needs to feed in its hardware map.
+     *
+     * @param hardwareMap
+     * @param alliance
+     */
+    public VuforiaAutoNav(HardwareMap hardwareMap, int alliance) {
+        this.hardwareMap = hardwareMap;
+        this.initView();
+        this.setAlliance(alliance);
+        this.turnOffAllianceDetection();
     }
 
     /**
@@ -674,10 +740,16 @@ public class VuforiaAutoNav {
             // express position (translation) of robot in inches.
             VectorF translation = lastLocation.getTranslation();
             this.setRobotPosition(translation.get(0) / mmPerInch, translation.get(1) / mmPerInch, translation.get(2) / mmPerInch);
+            telemetry.addData("Pos (in)", "{X, Y, Z} = %.1f, %.1f, %.1f",
+                    translation.get(0) / mmPerInch, translation.get(1) / mmPerInch, translation.get(2) / mmPerInch);
 
             // express the rotation of the robot in degrees.
             Orientation rotation = Orientation.getOrientation(lastLocation, EXTRINSIC, XYZ, DEGREES);
             this.setRobotAngle(rotation.thirdAngle);
+            telemetry.addData("Rot (deg)", "{Roll, Pitch, Heading} = %.0f, %.0f, %.0f", rotation.firstAngle, rotation.secondAngle, rotation.thirdAngle);
+            if (this.getAlliance() == 0 && this.allianceDetectionOn()) {
+                this.setAlliance((int) Math.signum(this.getRobotY()));
+            }
         }
         if (tfod != null) {
             // getUpdatedRecognitions() will return null if no new information is available since
