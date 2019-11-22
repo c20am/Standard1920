@@ -10,7 +10,7 @@ import org.firstinspires.ftc.teamcode.base_classes.TeleBot;
 /**
  * This is a test opmode used for getting data from the webcam.
  */
-@TeleOp(name = "Basic OpMode", group = "TeleOp")
+@TeleOp(name = "TestTeleOp", group = "TeleOp")
 public class TestTeleOp extends LinearOpMode {
 
     public CoordinateTestTeleBot robot = new CoordinateTestTeleBot(this);
