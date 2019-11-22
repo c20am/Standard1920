@@ -747,6 +747,7 @@ public class VuforiaAutoNav {
             Orientation rotation = Orientation.getOrientation(lastLocation, EXTRINSIC, XYZ, DEGREES);
             this.setRobotAngle(rotation.thirdAngle);
             telemetry.addData("Rot (deg)", "{Roll, Pitch, Heading} = %.0f, %.0f, %.0f", rotation.firstAngle, rotation.secondAngle, rotation.thirdAngle);
+            telemetry.update();
             if (this.getAlliance() == 0 && this.allianceDetectionOn()) {
                 this.setAlliance((int) Math.signum(this.getRobotY()));
             }
