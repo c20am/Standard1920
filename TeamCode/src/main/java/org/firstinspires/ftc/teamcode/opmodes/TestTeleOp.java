@@ -1,19 +1,19 @@
 package org.firstinspires.ftc.teamcode.opmodes;
 
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
-import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.util.ElapsedTime;
-import com.qualcomm.robotcore.util.Range;
 
-import org.firstinspires.ftc.teamcode.base_classes.Robot;
+import org.firstinspires.ftc.teamcode.base_classes.CoordinateTestTeleBot;
 import org.firstinspires.ftc.teamcode.base_classes.TeleBot;
 
-@TeleOp(name = "Basic OpMode", group = "TeleOp")
-public class BasicTeleOp extends LinearOpMode {
+/**
+ * This is a test opmode used for getting data from the webcam.
+ */
+@TeleOp(name = "TestTeleOp", group = "TeleOp")
+public class TestTeleOp extends LinearOpMode {
 
-    public TeleBot robot = new TeleBot(this);
+    public CoordinateTestTeleBot robot = new CoordinateTestTeleBot(this);
     public ElapsedTime runtime = new ElapsedTime();
 
     @Override
@@ -29,12 +29,9 @@ public class BasicTeleOp extends LinearOpMode {
 
         // run until the end of the match (driver presses STOP)
         while (opModeIsActive()) {
+            robot.getNav().updateView();
 
             robot.controlledDrive();
-
-            // Show the elapsed game time and wheel power.
-            telemetry.addData("Status", "Run Time: " + runtime.toString());
-            telemetry.update();
         }
     }
 }

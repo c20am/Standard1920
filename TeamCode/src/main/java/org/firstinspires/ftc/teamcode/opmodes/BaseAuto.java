@@ -7,7 +7,7 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 import org.firstinspires.ftc.teamcode.base_classes.AutoBot;
 
 /**
- * This is a basic opmode.
+ * This is a basic opmode for auto.
  * PLEASE USE GETTERS AND SETTERS INSTEAD OF DIRECTLY SETTING VARIABLES
  * <p>
  * TODO: make robot able to deal with the fact that there is another robot on the same team
@@ -35,6 +35,7 @@ public class BaseAuto extends LinearOpMode {
 
     /**
      * get the safe distance
+     *
      * @return safe distance
      */
     public float getSafeDistance() {
@@ -43,6 +44,7 @@ public class BaseAuto extends LinearOpMode {
 
     /**
      * set the safe distance
+     *
      * @param safeDistance
      */
     public void setSafeDistance(float safeDistance) {
@@ -51,6 +53,7 @@ public class BaseAuto extends LinearOpMode {
 
     /**
      * get the drop position
+     *
      * @return drop position
      */
     public float getDropPosition() {
@@ -59,6 +62,7 @@ public class BaseAuto extends LinearOpMode {
 
     /**
      * set the drop position
+     *
      * @param dropPosition
      */
     public void setDropPosition(float dropPosition) {
@@ -128,7 +132,6 @@ public class BaseAuto extends LinearOpMode {
 
         // run until the end of auto (driver presses STOP)
         while (opModeIsActive()) {
-
             robot.getNav().updateView();
             // Show the elapsed game time and wheel power.
             telemetry.addData("Status", "Run Time: " + runtime.toString());
