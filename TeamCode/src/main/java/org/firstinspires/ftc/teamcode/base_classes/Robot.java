@@ -87,6 +87,10 @@ public abstract class Robot {
         pulley.setDirection(DcMotor.Direction.FORWARD);
         lift.setDirection(DcMotor.Direction.FORWARD);
 
+        //sets motor encoders
+        frontLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        frontLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+
         //FROM ftc samples
         //sets zero power behavior of the motors
         frontLeft.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
@@ -191,4 +195,5 @@ public abstract class Robot {
     public void stopPulley() {
         pulley.setPower(0);
     }
+
 }

@@ -2,6 +2,7 @@ package org.firstinspires.ftc.teamcode.opmodes;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 
@@ -10,9 +11,7 @@ import org.firstinspires.ftc.teamcode.enums.Alliance;
 
 
 /**
- * A very simple time-based backup auto
- *
- * Untested, so timing is arbitrary
+ * An encoder based auto
  */
 
 public abstract class SimpleAutoMain extends LinearOpMode {
@@ -21,6 +20,14 @@ public abstract class SimpleAutoMain extends LinearOpMode {
 
     public AutoBot robot = new AutoBot(this);
     public ElapsedTime runtime = new ElapsedTime();
+
+    //Declares encoder numbers
+    final double COUNTS_PER_MOTOR_REV = 537.6;    // eg: TETRIX Motor Encoder
+    final double DRIVE_GEAR_REDUCTION = 2.0;     // This is < 1.0 if geared UP
+    final double WHEEL_DIAMETER_INCHES = 3.94;     // For figuring circumference
+    final double COUNTS_PER_INCH = (COUNTS_PER_MOTOR_REV * DRIVE_GEAR_REDUCTION) / (WHEEL_DIAMETER_INCHES * 3.1415);
+
+
     @Override
     public void runOpMode() {
 
@@ -36,25 +43,32 @@ public abstract class SimpleAutoMain extends LinearOpMode {
         runtime.reset();
 
         // Run until the end of auto (driver presses STOP)
-        while (opModeIsActive() && (runtime.seconds() < 1.0)) { //Raise lift for 1 second
-            robot.raiseLift(.5);
-        }
+        while (opModeIsActive()) {
+            public void encoderDrive ( double speed, double inches, double timeout){
+                int target = robot.frontLeft.getCurrentPosition() + (int) (inches * COUNTS_PER_INCH);
 
-        while (opModeIsActive() && (runtime.seconds() < 3.0)) { //Strafe for 2 seconds to reach platform
-            robot.stopLift();
-            if (getAlliance() == Alliance.RED) robot.strafeLeft(.75);
-            if (getAlliance() == Alliance.BLUE) robot.strafeRight(.75);
-        }
+                if (opModeIsActive()) {
+                    robot.frontLeft.setTargetPosition(target);
+                    robot.frontLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                }
 
-        while (opModeIsActive() && (runtime.seconds() < 4.0)) { //Lower lift for 1 second to grab platform
-            robot.stopDriving();
-            robot.lowerLift(.75);
-        }
+                // keep looping while we are still active, and there is time left, and both motors are running.
+                while (opModeIsActive() && (runtime.seconds() < timeout) && (robot.frontLeft.isBusy())) {
 
-        while (opModeIsActive() && (runtime.seconds() < 6.0)) { //Strafe for 2 seconds to place platform
-            robot.stopLift();
-            if (getAlliance() == Alliance.RED) robot.strafeRight(.75);
-            if (getAlliance() == Alliance.BLUE) robot.strafeLeft(.75);
+                    // Display it for the driver.
+                    telemetry.addData("Path1", "Running to %7d", target);
+                    telemetry.addData("Path2", "Running at %7d", robot.frontLeft.getCurrentPosition());
+                    telemetry.update();
+                }
+
+                // Stop all motion;
+                robot.stopDriving();
+
+                // Turn off RUN_TO_POSITION
+                robot.frontLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+
+                //  sleep(250);   // optional pause after each move
+            }
         }
     }
 }
