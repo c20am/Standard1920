@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode.opmodes;
 
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.util.ElapsedTime;
@@ -11,6 +12,7 @@ import org.firstinspires.ftc.teamcode.base_classes.TeleBot;
  * This is a test opmode used for getting data from the webcam.
  */
 @TeleOp(name = "TestTeleOp", group = "TeleOp")
+@Disabled
 public class TestTeleOp extends LinearOpMode {
 
     public CoordinateTestTeleBot robot = new CoordinateTestTeleBot(this);

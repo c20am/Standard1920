@@ -1,6 +1,7 @@
 package org.firstinspires.ftc.teamcode.opmodes;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
@@ -15,6 +16,7 @@ import org.firstinspires.ftc.teamcode.base_classes.AutoBot;
  */
 
 @Autonomous(name = "Basic Auto", group = "Auto")
+@Disabled
 public class BaseAuto extends LinearOpMode {
 
     public AutoBot robot = new AutoBot(this);

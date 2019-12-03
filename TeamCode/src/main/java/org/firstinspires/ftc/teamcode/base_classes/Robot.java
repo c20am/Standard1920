@@ -131,7 +131,7 @@ public abstract class Robot {
         this.setLeftPower(0);
     }
 
-    public void strafeLeft(double power) {
+    public void strafeRight(double power) {
         power = Range.clip(power, -1.0, 1.0);
 
         frontLeft.setPower(-power);
@@ -142,8 +142,8 @@ public abstract class Robot {
         this.setLeftPower(power);
     }
 
-    public void strafeRight(double power) {
-        strafeLeft(-power);
+    public void strafeLeft(double power) {
+        strafeRight(-power);
     }
 
     public void stopDriving() {

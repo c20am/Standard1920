@@ -8,6 +8,7 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.teamcode.base_classes.AutoBot;
 import org.firstinspires.ftc.teamcode.enums.Alliance;
+import org.firstinspires.ftc.teamcode.enums.Direction;
 
 
 /**
@@ -27,48 +28,84 @@ public abstract class SimpleAutoMain extends LinearOpMode {
     final double WHEEL_DIAMETER_INCHES = 3.94;     // For figuring circumference
     final double COUNTS_PER_INCH = (COUNTS_PER_MOTOR_REV * DRIVE_GEAR_REDUCTION) / (WHEEL_DIAMETER_INCHES * 3.1415);
 
-
     @Override
     public void runOpMode() {
 
         telemetry.addData("Status", "Initialized");
         telemetry.addData("Alliance", getAlliance());
+        telemetry.addData("Test", "test");
+
         telemetry.update();
 
         robot.init();
-        robot.initTracking();
 
         // Wait for the game to start (driver presses PLAY)
         waitForStart();
         runtime.reset();
 
         // Run until the end of auto (driver presses STOP)
-        while (opModeIsActive()) {
-            public void encoderDrive ( double speed, double inches, double timeout){
-                int target = robot.frontLeft.getCurrentPosition() + (int) (inches * COUNTS_PER_INCH);
+        if (opModeIsActive()) {
 
-                if (opModeIsActive()) {
-                    robot.frontLeft.setTargetPosition(target);
-                    robot.frontLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-                }
+            //Strafe right to platform
+            encoderDrive(.3, 7, 10, Direction.RIGHT);
 
-                // keep looping while we are still active, and there is time left, and both motors are running.
-                while (opModeIsActive() && (runtime.seconds() < timeout) && (robot.frontLeft.isBusy())) {
+            //Lower lift
+            robot.lowerLift(.8); //TODO: Make lift raise/lower a set amount?
+            sleep(1000);
+            robot.stopLift();
 
-                    // Display it for the driver.
-                    telemetry.addData("Path1", "Running to %7d", target);
-                    telemetry.addData("Path2", "Running at %7d", robot.frontLeft.getCurrentPosition());
-                    telemetry.update();
-                }
+            //Strafe left to building site
+            encoderDrive(.3, 7, 10, Direction.LEFT);
 
-                // Stop all motion;
-                robot.stopDriving();
+            //Raise lift
+            robot.raiseLift(.8);
+            sleep(1000);
+            robot.stopLift();
 
-                // Turn off RUN_TO_POSITION
-                robot.frontLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-
-                //  sleep(250);   // optional pause after each move
-            }
         }
+
     }
+
+    public void encoderDrive(double speed, double inches, double timeout, Direction dir) {
+        //TODO: Implement directions
+        int target = 0;
+
+        if (opModeIsActive()) {
+
+            // Set target
+            target = robot.frontLeft.getCurrentPosition() + (int) (inches * COUNTS_PER_INCH);
+
+            // Turn On RUN_TO_POSITION
+            if (dir == Direction.BACKWARD) target = -target;
+            else if (dir == Direction.RIGHT) target = -target;
+            robot.frontLeft.setTargetPosition(target);
+            robot.frontLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+
+            // Reset the timeout time and start motion.
+            runtime.reset();
+            if (dir == Direction.FORWARD) robot.driveForwards(speed);
+            else if (dir == Direction.BACKWARD) robot.driveBackwards(speed);
+            else if (dir == Direction.RIGHT) robot.strafeRight(speed);
+            else if (dir == Direction.LEFT) robot.strafeLeft(speed);
+
+        }
+
+        // Keep looping while we are still active, and there is time left, and both motors are running.
+        while (opModeIsActive() && (runtime.seconds() < timeout) && (robot.frontLeft.isBusy())) {
+
+            // Display it for the driver.
+            telemetry.addData("Path1", "Running to %7d", target);
+            telemetry.addData("Path2", "Running at %7d", robot.frontLeft.getCurrentPosition());
+            telemetry.update();
+        }
+
+        // Stop all motion;
+        robot.stopDriving();
+
+        // Turn off RUN_TO_POSITION
+        robot.frontLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+
+        sleep(250);   // optional pause after each move
+    }
+
 }
