@@ -14,7 +14,6 @@ import org.firstinspires.ftc.teamcode.enums.Direction;
 /**
  * An encoder based auto
  */
-
 public abstract class SimpleAutoMain extends LinearOpMode {
 
     public abstract Alliance getAlliance();
@@ -30,10 +29,10 @@ public abstract class SimpleAutoMain extends LinearOpMode {
     final double LIFT_COUNTS_PER_INCH = 5000;
 
     @Override
-    public void runOpMode() {
+    public void runOpMode() throws InterruptedException {
 
         telemetry.addData("Status", "Initialized");
-        telemetry.addData("Alliance", getAlliance());
+  //      telemetry.addData("Alliance", getAlliance());
         telemetry.addData("Test", "test");
 
         telemetry.update();
@@ -54,22 +53,30 @@ public abstract class SimpleAutoMain extends LinearOpMode {
 
             //Strafe right to platform
             //TODO: Change these inches
-            encoderDrive(.3, 15, 10, Direction.RIGHT);
+            encoderDrive(.5, 24.5   , 10, Direction.RIGHT);
 
             //Lower lift
-            encoderLift(.7, 5000, 10, Direction.DOWN);
+            encoderLift(.7, 2800, 10, Direction.DOWN);
 
             //Strafe left to building site
             //TODO: Change these inches
-            encoderDrive(.3, 15, 10, Direction.LEFT);
+            encoderDrive(.8, 35, 10, Direction.LEFT);
+
+            robot.rotateClockwise(1);
+            sleep(500);
+            robot.stopDriving();
 
             //Raise lift
-            encoderLift(.7, 5000, 10, Direction.UP);
+            encoderLift(.7, 2800, 10, Direction.UP);
 
+
+            encoderDrive(.7, 14, 10, Direction.FORWARD); //the FORWARD goes backwards
+            //strafe after here????
+            //or should we turn and then go FORWARD
             //Park
             //TODO: Change these inches
-            if (getAlliance() == Alliance.BLUE) encoderDrive(.7, 15, 10, Direction.BACKWARD);
-            else if (getAlliance() == Alliance.RED) encoderDrive(.7, 15, 10, Direction.FORWARD);
+//            if (getAlliance() == Alliance.BLUE) encoderDrive(.7, 15, 10, Direction.BACKWARD);
+//            else if (getAlliance() == Alliance.RED) encoderDrive(.7, 15, 10, Direction.FORWARD);
 
         }
 

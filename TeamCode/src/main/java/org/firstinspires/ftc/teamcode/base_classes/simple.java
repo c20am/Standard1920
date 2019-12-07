@@ -152,19 +152,19 @@ public enum controllerPos {
     }
 
     public void pickup() {
-        if(gamepad1.right_stick_y > .5) {
+        if(gamepad2.right_stick_y > .5) {
             PULLEY.setPower(.5);
-        } else if(gamepad1.right_stick_y < -.5) {
+        } else if(gamepad2.right_stick_y < -.5) {
             PULLEY.setPower(-.6);
         } else {
             PULLEY.setPower(0);
         }
 
-        if(gamepad1.a) {
+        if(gamepad2.a) {
             left.setPosition(.16);
             right.setPosition(.9);
         }
-        if(gamepad1.b) {
+        if(gamepad2.b) {
             left.setPosition(.49);
             right.setPosition(.65);
         }
@@ -172,9 +172,9 @@ public enum controllerPos {
     }
 
     public void setLift() {
-        if(gamepad1.right_bumper) {
+        if(gamepad2.right_bumper) {
             LIFT.setPower(1);
-        } else if(gamepad1.left_bumper) {
+        } else if(gamepad2.left_bumper) {
             LIFT.setPower(-1);
         } else {
             LIFT.setPower(0);
