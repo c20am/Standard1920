@@ -2,6 +2,7 @@ package org.firstinspires.ftc.teamcode.base_classes;
 
 import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.hardware.bosch.JustLoggingAccelerationIntegrator;
+import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.Servo;
@@ -16,7 +17,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
 public abstract class Robot {
     //TODO: add getters and setters
 
-    OpMode opMode;
+    LinearOpMode opMode;
 
     //Declares motors and servos
     public DcMotor frontLeft;
@@ -27,6 +28,7 @@ public abstract class Robot {
     public DcMotor lift;
     Servo leftHand;
     Servo rightHand;
+
 
     // The IMU sensor object
     public BNO055IMU imu;
@@ -59,7 +61,7 @@ public abstract class Robot {
 
     }
 
-    public Robot(OpMode opMode) {
+    public Robot(LinearOpMode opMode) {
         this.opMode = opMode;
     }
 

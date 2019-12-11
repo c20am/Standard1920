@@ -81,6 +81,7 @@ import static org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocaliz
  * y axis runs through bridges; blue side is positive and red side is negative
  * z axis goes through center of field; up is positive
  * no clue yet which direction is zero degrees and which direction is positive degrees
+ * going with assumption that degrees go from 0 to 359 and that positive is counterclockwise
  * -1 is red alliance, 1 is blue alliance
  * <p>
  * To get the x and y of a stone, call getStoneX and getStoneY respectively
@@ -484,23 +485,27 @@ public class VuforiaAutoNav {
     }
 
     /**
-     * Because this class is not an opmode, the opmode using it needs to feed in its hardware map.
+     * Because this class is not an opmode, the opmode using it needs to feed in its hardware map and telemetry.
      *
      * @param hardwareMap
+     * @param telemetry
      */
-    public VuforiaAutoNav(HardwareMap hardwareMap) {
+    public VuforiaAutoNav(HardwareMap hardwareMap, Telemetry telemetry) {
         this.hardwareMap = hardwareMap;
+        this.telemetry = telemetry;
         this.initView();
     }
 
     /**
-     * Because this class is not an opmode, the opmode using it needs to feed in its hardware map.
+     * Because this class is not an opmode, the opmode using it needs to feed in its hardware map and telemetry.
      *
      * @param hardwareMap
      * @param alliance
+     * @param telemetry
      */
-    public VuforiaAutoNav(HardwareMap hardwareMap, int alliance) {
+    public VuforiaAutoNav(HardwareMap hardwareMap, Telemetry telemetry, int alliance) {
         this.hardwareMap = hardwareMap;
+        this.telemetry = telemetry;
         this.initView();
         this.setAlliance(alliance);
         this.turnOffAllianceDetection();
