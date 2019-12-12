@@ -87,6 +87,9 @@ import static org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocaliz
  * To get the x and y of a stone, call getStoneX and getStoneY respectively
  * <p>
  * To get the number, x, and y of a sky stone, call getSkyStonePosition, getSkyStoneX, and getSkyStoneY, respectively
+ * TODO: make wiring work
+ * TODO: make sure that code works
+ * TODO: confirm how the angle system works, and adjust it if necessary
  */
 public class VuforiaAutoNav {
 

@@ -19,7 +19,7 @@ import static org.firstinspires.ftc.teamcode.enums.Direction.RIGHT;
 /**
  * This class is the class for autonomous robots
  * <p>
- * TODO: make general coordinate system that uses both the IMU and the encoders
+ * TODO: implement bound checks for robot (based on math for size of robot)
  */
 public class AutoBot extends Robot {
 
@@ -176,6 +176,11 @@ public class AutoBot extends Robot {
         this.setIMU(new IMU(this.opMode.hardwareMap, this.opMode.telemetry));
         this.getNav().initView();
         this.getIMU().initIMU();
+        this.getNav().updateView();
+        this.setX(this.getNav().getRobotX());
+        this.setY(this.getNav().getRobotY());
+        this.setX(this.getNav().getRobotX());
+        this.getIMU().setAngle(this.getNavAngle());
     }
 
     /**
