@@ -54,8 +54,8 @@ import java.util.Locale;
  *
  * @see <a href="http://www.adafruit.com/products/2472">Adafruit IMU</a>
  */
-@TeleOp(name = "Sensor: BNO055 IMU", group = "Sensor")
-@Disabled                            // Comment this out to add to the opmode list
+@TeleOp(name = "IMU Test", group = "Sensor")
+//@Disabled                            // Comment this out to add to the opmode list
 public class IMUReadings extends LinearOpMode
 {
     //----------------------------------------------------------------------------------------------
@@ -141,6 +141,11 @@ public class IMUReadings extends LinearOpMode
                 .addData("heading", new Func<String>() {
                     @Override public String value() {
                         return formatAngle(angles.angleUnit, angles.firstAngle);
+                    }
+                })
+                .addData("adjusted heading", new Func<String>() {
+                    @Override public String value() {
+                        return formatAngle(angles.angleUnit, (angles.firstAngle % 360 + 360) % 360);
                     }
                 })
                 .addData("roll", new Func<String>() {

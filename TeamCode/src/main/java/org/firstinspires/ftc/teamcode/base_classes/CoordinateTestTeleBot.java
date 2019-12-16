@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode.base_classes;
 
+import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 
 import org.firstinspires.ftc.teamcode.algorithms.VuforiaAutoNav;
@@ -31,7 +32,7 @@ public class CoordinateTestTeleBot extends Robot {
         this.robotLength = robotLength;
     }
 
-    public CoordinateTestTeleBot(OpMode opMode) {
+    public CoordinateTestTeleBot(LinearOpMode opMode) {
         this.opMode = opMode;
     }
 
@@ -48,7 +49,7 @@ public class CoordinateTestTeleBot extends Robot {
     }
 
     public void initTracking() {
-        this.nav = new VuforiaAutoNav(this.opMode.hardwareMap);
+        this.nav = new VuforiaAutoNav(this.opMode.hardwareMap, this.opMode.telemetry);
         this.nav.initView();
     }
 

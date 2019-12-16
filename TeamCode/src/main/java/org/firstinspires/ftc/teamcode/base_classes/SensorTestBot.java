@@ -2,10 +2,8 @@ package org.firstinspires.ftc.teamcode.base_classes;
 
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
-import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.util.ElapsedTime;
-import com.qualcomm.robotcore.util.Range;
 
 import org.firstinspires.ftc.teamcode.algorithms.IMU;
 import org.firstinspires.ftc.teamcode.algorithms.VuforiaAutoNav;
@@ -17,11 +15,11 @@ import static org.firstinspires.ftc.teamcode.enums.Direction.LEFT;
 import static org.firstinspires.ftc.teamcode.enums.Direction.RIGHT;
 
 /**
- * This class is the class for autonomous robots
+ * This class is the class for sensor test robots
  * <p>
- * TODO: implement bound checks for robot (based on math for size of robot)
  */
-public class AutoBot extends Robot {
+
+public class SensorTestBot extends Robot {
 
     //stores the value of sin(45°), or sin(pi/4)
     public double sin45 = Math.sqrt(2) / 2;
@@ -35,7 +33,9 @@ public class AutoBot extends Robot {
     final double WHEEL_DIAMETER_INCHES = 3.94;     // For figuring circumference
     final double COUNTS_PER_INCH = (COUNTS_PER_MOTOR_REV * DRIVE_GEAR_REDUCTION) / (WHEEL_DIAMETER_INCHES * 3.1415);
     final double LIFT_COUNTS_PER_INCH = 5000;
-    private int alliance = 1;
+    private boolean encoders = false;
+    private boolean gyro = false;
+    private boolean cam = false;
 
     private float x = 0;
     private float y = 0;
@@ -82,13 +82,36 @@ public class AutoBot extends Robot {
         return (float) Math.abs(this.getRobotWidth() * Math.sin(Math.toRadians(-1 * (double) angle - 90))) + (float) Math.abs(this.getRobotLength() * Math.cos(Math.toRadians(-1 * (double) angle - 90)));
     }
 
+    public boolean testingEncoders() {
+        return encoders;
+    }
+
+    public void setEncoders(boolean encoders) {
+        this.encoders = encoders;
+    }
+
+    public boolean testingGyro() {
+        return gyro;
+    }
+
+    public void setGyro(boolean gyro) {
+        this.gyro = gyro;
+    }
+
+    public boolean testingCam() {
+        return cam;
+    }
+
+    public void setCam(boolean cam) {
+        this.cam = cam;
+    }
 
     /**
      * constructor for auto bot
      *
      * @param opMode
      */
-    public AutoBot(LinearOpMode opMode) {
+    public SensorTestBot(LinearOpMode opMode) {
         this.opMode = opMode;
     }
 
@@ -170,16 +193,25 @@ public class AutoBot extends Robot {
         }
     }
 
-    public void initAuto() {
+    public void initTest() {
         this.init();
-        this.setNav(new VuforiaAutoNav(this.opMode.hardwareMap, this.opMode.telemetry));
-        this.setIMU(new IMU(this.opMode.hardwareMap, this.opMode.telemetry));
-        this.getNav().initView();
-        this.getIMU().initIMU();
-        this.getNav().updateView();
-        this.setX(this.getNav().getRobotX());
-        this.setY(this.getNav().getRobotY());
-        this.getIMU().setAngle(this.getNavAngle());
+        if (this.testingGyro()) {
+            this.setIMU(new IMU(this.opMode.hardwareMap, this.opMode.telemetry));
+            this.getIMU().initIMU();
+            if (!this.testingCam()) {
+                this.getIMU().setAngle(0);
+            }
+        }
+        if (this.testingCam()) {
+            this.setNav(new VuforiaAutoNav(this.opMode.hardwareMap, this.opMode.telemetry));
+            this.getNav().initView();
+            this.getNav().updateView();
+            this.setX(this.getNav().getRobotX());
+            this.setY(this.getNav().getRobotY());
+            if (this.testingGyro()) {
+                this.getIMU().setAngle(this.getNavAngle());
+            }
+        }
     }
 
     /**

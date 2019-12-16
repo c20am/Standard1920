@@ -126,7 +126,7 @@ public class BaseAuto extends LinearOpMode {
         telemetry.update();
 
         robot.init();
-        robot.initTracking();
+//        robot.initTracking();
 
         // Wait for the game to start (driver presses PLAY)
         waitForStart();
