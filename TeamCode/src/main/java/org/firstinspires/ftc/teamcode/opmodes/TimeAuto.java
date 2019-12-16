@@ -18,8 +18,6 @@ public abstract class TimeAuto extends LinearOpMode {
     public AutoBot robot = new AutoBot(this);
     public ElapsedTime runtime = new ElapsedTime();
 
-    //Declares encoder numbers
-
     @Override
     public void runOpMode() {
 
