@@ -3,14 +3,13 @@ package org.firstinspires.ftc.teamcode.opmodes;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
-import org.firstinspires.ftc.teamcode.base_classes.AutoBot;
 import org.firstinspires.ftc.teamcode.base_classes.SimpleAutoBot;
 import org.firstinspires.ftc.teamcode.enums.Alliance;
 import org.firstinspires.ftc.teamcode.enums.Direction;
 
 /**
  * A time based auto
- */
+ **/
 
 public abstract class TimeAuto extends LinearOpMode {
 
@@ -60,6 +59,9 @@ public abstract class TimeAuto extends LinearOpMode {
                     robot.driveForwards(.7);
                 }
             }
+
+            //Stop
+            robot.stopDriving();
 
         }
 
