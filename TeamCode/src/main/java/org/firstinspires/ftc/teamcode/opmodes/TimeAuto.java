@@ -32,31 +32,66 @@ public abstract class TimeAuto extends LinearOpMode {
         while (opModeIsActive()) {
 
             /** THIS ASSUMES THE LIFT STARTS UP **/
+            //TODO: Set times
 
-            //Strafe right to platform for 3 seconds
+            //Drive backwards to platform for 3 seconds
             while (opModeIsActive() && (runtime.seconds() < 3.0)) {
-                robot.strafeRight(.7);
+                robot.driveBackwards(.7);
             }
 
             //Lower lift
             this.robot.encoderLift(.7, 4000, 10, Direction.DOWN);
 
-            //Strafe left to building site for 3 seconds
+            //Drive forwards to building site for 3 seconds
             runtime.reset();
             while (opModeIsActive() && (runtime.seconds() < 3.0)) {
-                robot.strafeLeft(.7);
+                robot.driveForwards(.7);
             }
 
             //Raise lift
             this.robot.encoderLift(.7, 4000, 10, Direction.UP);
 
-            //Park (3 seconds)
+            //Place platform and park
             runtime.reset();
             while (opModeIsActive() && (runtime.seconds() < 3.0)) {
                 if (getAlliance() == Alliance.BLUE) {
-                    robot.driveBackwards(.7);
+                    //Rotate counterclockwise for .5 seconds to place platform
+                    runtime.reset();
+                    while (opModeIsActive() && (runtime.seconds() < .5)) {
+                        robot.rotateCounter(.7);
+                    }
+
+                    //Rotate back
+                    runtime.reset();
+                    while (opModeIsActive() && (runtime.seconds() < .5)) {
+                        robot.rotateClockwise(.7);
+                    }
+
+                    //Strafe left for 3 seconds to park
+                    runtime.reset();
+                    while (opModeIsActive() && (runtime.seconds() < 3)) {
+                        robot.strafeLeft(.7);
+                    }
+
                 } else if (getAlliance() == Alliance.RED) {
-                    robot.driveForwards(.7);
+                    //Rotate clockwise for .5 seconds to place platform
+                    runtime.reset();
+                    while (opModeIsActive() && (runtime.seconds() < .5)) {
+                        robot.rotateClockwise(.7);
+                    }
+
+                    //Rotate back
+                    runtime.reset();
+                    while (opModeIsActive() && (runtime.seconds() < .5)) {
+                        robot.rotateCounter(.7);
+                    }
+
+                    //Strafe right for 3 seconds to park
+                    runtime.reset();
+                    while (opModeIsActive() && (runtime.seconds() < 3)) {
+                        robot.strafeRight(.7);
+                    }
+
                 }
             }
 
