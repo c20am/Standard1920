@@ -1,9 +1,13 @@
 package org.firstinspires.ftc.teamcode.base_classes;
 
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
+import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+
 import com.qualcomm.robotcore.util.Range;
 
 public class TeleBot extends Robot {
+
+    OpMode opMode;
 
     //under this number, input won't be taken into account
     public double dead = .13;
@@ -70,17 +74,6 @@ public class TeleBot extends Robot {
             } else {
                 stopPulley();
             }
-
-            //Powers lift's motor according to shoulder buttons
-            if (rightBumper) {
-                raiseLift(.8);
-            } else if (leftBumper) {
-                lowerLift(.8);
-            } else {
-                stopLift();
-            }
-
-            //TODO: Add servos/hands movement when we figure out where 0 degrees is on the servos
 
         }
     }

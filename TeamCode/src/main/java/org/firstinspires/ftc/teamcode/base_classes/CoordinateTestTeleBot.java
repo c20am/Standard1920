@@ -106,17 +106,6 @@ public class CoordinateTestTeleBot extends Robot {
                 stopPulley();
             }
 
-            //Powers lift's motor according to shoulder buttons
-            if (rightBumper) {
-                raiseLift(.8);
-            } else if (leftBumper) {
-                lowerLift(.8);
-            } else {
-                stopLift();
-            }
-
-            //TODO: Add servos/hands movement when we figure out where 0 degrees is on the servos
-
         }
     }
 

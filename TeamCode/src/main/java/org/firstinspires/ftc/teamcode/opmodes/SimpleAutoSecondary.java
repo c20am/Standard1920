@@ -256,48 +256,6 @@ public abstract class SimpleAutoSecondary extends LinearOpMode {
         sleep(250);   // optional pause after each move
     }
 
-    /**
-     * LIFT
-     */
-    public void encoderLift(double speed, double counts, double timeout, Direction dir) {
-        int target = 0;
-
-        if (opModeIsActive()) {
-
-            // Set target
-            target = robot.lift.getCurrentPosition() + (int) counts;
-            if (dir == Direction.DOWN) target = -target;
-
-            // Turn On RUN_TO_POSITION
-            robot.lift.setTargetPosition(target);
-            robot.lift.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-
-            // Reset the timeout time and start motion.
-            runtime.reset();
-            if (dir == Direction.UP) robot.raiseLift(speed);
-            else if (dir == Direction.DOWN) robot.lowerLift(speed);
-
-        }
-
-        // Keep looping while we are still active, and there is time left, and both motors are running.
-        while (opModeIsActive() && (runtime.seconds() < timeout) && (robot.lift.isBusy())) {
-
-            // Display it for the driver.
-            telemetry.addData("Path1", "Lift Running to %7d", target);
-            telemetry.addData("Path2", "Lift Running at %7d", robot.lift.getCurrentPosition());
-            telemetry.update();
-        }
-
-        // Stop lift
-        robot.stopLift();
-
-        // Turn off RUN_TO_POSITION
-        robot.lift.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-
-        sleep(250);   // optional pause after each move
-
-    }
-
     public void encoderDrive(double speed, double inches, double timeout, Direction dir) {
 
         int target = 0;

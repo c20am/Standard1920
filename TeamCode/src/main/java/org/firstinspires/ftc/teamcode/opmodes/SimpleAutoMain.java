@@ -63,15 +63,13 @@ public abstract class SimpleAutoMain extends LinearOpMode {
             //TODO: Change these inches
             this.robot.encoderDrive(.3, 15, 10, Direction.RIGHT);
 
-            //Lower lift
-            this.robot.encoderLift(.7, 5000, 10, Direction.DOWN);
+            //Lower claws
 
             //Strafe left to building site
             //TODO: Change these inches
             this.robot.encoderDrive(.3, 15, 10, Direction.LEFT);
 
-            //Raise lift
-            this.robot.encoderLift(.7, 5000, 10, Direction.UP);
+            //Raise claws
 
             //Park
             //TODO: Change these inches

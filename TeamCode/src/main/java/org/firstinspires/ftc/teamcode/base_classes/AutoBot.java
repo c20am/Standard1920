@@ -363,48 +363,6 @@ public class AutoBot extends Robot {
     }
 
     /**
-     * LIFT
-     */
-    public void encoderLift(double speed, double counts, double timeout, Direction dir) {
-        int target = 0;
-
-        if (this.opMode.opModeIsActive()) {
-
-            // Set target
-            target = this.lift.getCurrentPosition() + (int) counts;
-            if (dir == Direction.DOWN) target = -target;
-
-            // Turn On RUN_TO_POSITION
-            this.lift.setTargetPosition(target);
-            this.lift.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-
-            // Reset the timeout time and start motion.
-            this.getRunTime().reset();
-            if (dir == Direction.UP) this.raiseLift(speed);
-            else if (dir == Direction.DOWN) this.lowerLift(speed);
-
-        }
-
-        // Keep looping while we are still active, and there is time left, and both motors are running.
-        while (this.opMode.opModeIsActive() && (this.getRunTime().seconds() < timeout) && (this.lift.isBusy())) {
-
-            // Display it for the driver.
-            this.opMode.telemetry.addData("Path1", "Lift Running to %7d", target);
-            this.opMode.telemetry.addData("Path2", "Lift Running at %7d", this.lift.getCurrentPosition());
-            this.opMode.telemetry.update();
-        }
-
-        // Stop lift
-        this.stopLift();
-
-        // Turn off RUN_TO_POSITION
-        this.lift.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-
-        this.opMode.sleep(250);   // optional pause after each move
-
-    }
-
-    /**
      * TODO: make sure that this also works for strafing
      *
      * @param speed

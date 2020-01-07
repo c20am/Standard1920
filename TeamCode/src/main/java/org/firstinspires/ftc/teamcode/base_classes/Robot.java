@@ -25,9 +25,10 @@ public abstract class Robot {
     public DcMotor backLeft;
     public DcMotor backRight;
     public DcMotor pulley;
-    public DcMotor lift;
     Servo leftHand;
     Servo rightHand;
+    Servo leftClaw;
+    Servo rightClaw;
 
 
     // The IMU sensor object
@@ -75,11 +76,12 @@ public abstract class Robot {
         backLeft = opMode.hardwareMap.get(DcMotor.class, "bl");
         backRight = opMode.hardwareMap.get(DcMotor.class, "br");
         pulley = opMode.hardwareMap.get(DcMotor.class, "pulley");
-        lift = opMode.hardwareMap.get(DcMotor.class, "lift");
 
         //initializes servos
         leftHand = opMode.hardwareMap.get(Servo.class, "left_hand");
         rightHand = opMode.hardwareMap.get(Servo.class, "right_hand");
+        leftClaw = opMode.hardwareMap.get(Servo.class, "left_claw");
+        rightClaw = opMode.hardwareMap.get(Servo.class, "right_claw");
 
         //sets direction of the motors
         frontLeft.setDirection(DcMotor.Direction.REVERSE);
@@ -87,13 +89,10 @@ public abstract class Robot {
         backLeft.setDirection(DcMotor.Direction.REVERSE);
         backRight.setDirection(DcMotor.Direction.FORWARD);
         pulley.setDirection(DcMotor.Direction.FORWARD);
-        lift.setDirection(DcMotor.Direction.FORWARD);
 
         //sets motor encoders
         frontLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         frontLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        lift.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        lift.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
         //FROM ftc samples
         //sets zero power behavior of the motors
@@ -102,7 +101,6 @@ public abstract class Robot {
         backLeft.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         backRight.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         pulley.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        lift.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
     }
 
@@ -118,14 +116,7 @@ public abstract class Robot {
     }
 
     public void driveBackwards(double power) {
-        power = Range.clip(power, -1.0, 1.0);
-
-        frontLeft.setPower(power);
-        frontRight.setPower(power);
-        backLeft.setPower(power);
-        backRight.setPower(power);
-        this.setForwardPower(power);
-        this.setLeftPower(0);
+        driveForwards(-power);
     }
 
     public void strafeRight(double power) {
@@ -167,17 +158,16 @@ public abstract class Robot {
         rotateClockwise(-power);
     }
 
-    public void raiseLift(double power) {
-        power = Range.clip(power, -1.0, 1.0);
-        lift.setPower(power);
+    public void lowerClaws() {
+        leftClaw.setPosition(.2);
+        rightClaw.setPosition(1);
+
     }
 
-    public void lowerLift(double power) {
-        raiseLift(-power);
-    }
+    public void raiseClaws() {
+        leftClaw.setPosition(.9);
+        rightClaw.setPosition(.3);
 
-    public void stopLift() {
-        lift.setPower(0);
     }
 
     public void raisePulley(double power) {

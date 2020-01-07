@@ -6,7 +6,7 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.Range;
 
-@TeleOp(name="mechh", group="Linear Opmode")
+@TeleOp(name = "mechh", group = "Linear Opmode")
 public class simple extends LinearOpMode {
     private DcMotor FR = null;
     private DcMotor FL = null;
@@ -88,17 +88,18 @@ public class simple extends LinearOpMode {
 
 
     }
+
     public void Strafe(int strafedirection) {
 
         double FLpower = -1 * strafedirection * strafepower;
         double FRpower = strafedirection * strafepower;
         double BRpower = -1 * strafedirection * strafepower;
-        double BLpower = strafedirection * strafepower ;
+        double BLpower = strafedirection * strafepower;
 
-        FLpower = Range.clip(FLpower, -1.0, 1.0) ;
-        BRpower = Range.clip(BRpower, -1.0, 1.0) ;
-        BLpower = Range.clip(BLpower, -1.0, 1.0) ;
-        FRpower = Range.clip(FRpower, -1.0, 1.0) ;
+        FLpower = Range.clip(FLpower, -1.0, 1.0);
+        BRpower = Range.clip(BRpower, -1.0, 1.0);
+        BLpower = Range.clip(BLpower, -1.0, 1.0);
+        FRpower = Range.clip(FRpower, -1.0, 1.0);
 
         readjustMotorPower(FRpower);
         readjustMotorPower(BRpower);
@@ -123,9 +124,9 @@ public class simple extends LinearOpMode {
         telemetry.update();
     }
 
-public enum controllerPos {
-    STRAFE_RIGHT, STRAFE_LEFT, DRIVE_FOWARD, DRIVE_BACK, TURN_RIGHT, TURN_LEFT, ZERO;
-}
+    public enum controllerPos {
+        STRAFE_RIGHT, STRAFE_LEFT, DRIVE_FOWARD, DRIVE_BACK, TURN_RIGHT, TURN_LEFT, ZERO;
+    }
 
     public double readjustMotorPower(double motorPower) {
         if (Math.abs(motorPower) >= 0.3) {
@@ -152,19 +153,19 @@ public enum controllerPos {
     }
 
     public void pickup() {
-        if(gamepad2.right_stick_y > .5) {
+        if (gamepad2.right_stick_y > .5) {
             PULLEY.setPower(.5);
-        } else if(gamepad2.right_stick_y < -.5) {
+        } else if (gamepad2.right_stick_y < -.5) {
             PULLEY.setPower(-.6);
         } else {
             PULLEY.setPower(0);
         }
 
-        if(gamepad2.a) {
+        if (gamepad2.a) {
             left.setPosition(.16);
             right.setPosition(.9);
         }
-        if(gamepad2.b) {
+        if (gamepad2.b) {
             left.setPosition(.49);
             right.setPosition(.65);
         }
@@ -172,9 +173,9 @@ public enum controllerPos {
     }
 
     public void setLift() {
-        if(gamepad2.right_bumper) {
+        if (gamepad2.right_bumper) {
             LIFT.setPower(1);
-        } else if(gamepad2.left_bumper) {
+        } else if (gamepad2.left_bumper) {
             LIFT.setPower(-1);
         } else {
             LIFT.setPower(0);
