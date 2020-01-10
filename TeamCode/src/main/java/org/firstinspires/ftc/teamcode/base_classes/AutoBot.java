@@ -19,7 +19,6 @@ import static org.firstinspires.ftc.teamcode.enums.Direction.RIGHT;
 /**
  * This class is the class for complex autonomous robots
  * <p>
- * TODO: implement bound checks for robot (based on math for size of robot)
  */
 public class AutoBot extends Robot {
 
@@ -115,7 +114,7 @@ public class AutoBot extends Robot {
     }
 
     /**
-     * gets the angled width
+     * gets the angled width (in the x direction)
      * TODO: make sure this works with new coordinate system
      *
      * @param angle angle, in degrees, that the robot is rotated counterclockwise from its original position
@@ -126,7 +125,7 @@ public class AutoBot extends Robot {
     }
 
     /**
-     * gets the angled length
+     * gets the angled length (in the y direction)
      * TODO: make sure this works with new coordinate system
      *
      * @param angle angle, in degrees, that the robot is rotated counterclockwise from its original position
@@ -264,6 +263,18 @@ public class AutoBot extends Robot {
         } else if (dir == RIGHT) {
             this.setX(this.getX() + (float) (distance * Math.sin((double) this.getIMUAngle() + 270)));
             this.setY(this.getY() + (float) (distance * Math.cos((double) this.getIMUAngle() + 270)));
+        }
+        if (this.getX()<(-72+this.getRobotAngledWidth(this.getIMUAngle())/2)){
+            this.setX(-72+this.getRobotAngledWidth(this.getIMUAngle())/2);
+        }
+        else if (this.getX()>(72-this.getRobotAngledWidth(this.getIMUAngle())/2)){
+            this.setX(72-this.getRobotAngledWidth(this.getIMUAngle())/2);
+        }
+        if (this.getY()<(-72+this.getRobotAngledLength(this.getIMUAngle())/2)){
+            this.setY(-72+this.getRobotAngledLength(this.getIMUAngle())/2);
+        }
+        else if (this.getY()<(72-this.getRobotAngledLength(this.getIMUAngle())/2)){
+            this.setY(72-this.getRobotAngledLength(this.getIMUAngle())/2);
         }
 
     }
