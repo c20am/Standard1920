@@ -24,10 +24,10 @@ public abstract class TimeAuto extends LinearOpMode {
         //TODO: Set times
         //Power is backwards
         //Turning is backwards
-        long FORWARD_TIME = 500;
+        long FORWARD_TIME = 1000;
         long TURN_TIME = 500;
         long STRAFE_TIME = 500;
-        double SPEED = -.4;
+        double SPEED = -.1;
         double TURN_SPEED = .5;
 
 
@@ -39,7 +39,8 @@ public abstract class TimeAuto extends LinearOpMode {
 
 
         // Run until the end of auto (driver presses STOP)
-        while (opModeIsActive()) {
+        // changed while to if
+        if (opModeIsActive()) {
 
             //Start with claws raised
             robot.raiseClaws();
@@ -54,13 +55,13 @@ public abstract class TimeAuto extends LinearOpMode {
             sleep(1000);
 
             //Drive forwards to building site
-            robot.driveForwards(SPEED);
+/*            robot.driveForwards(SPEED);
             sleep(FORWARD_TIME);
-            robot.stopDriving();
+            robot.stopDriving();*/
 
 
             //Place platform and park
-            while (opModeIsActive()) {
+/*            while (opModeIsActive()) {
                 if (getAlliance() == Alliance.BLUE) {
                     //Rotate counterclockwise for .5 seconds to place platform
                     runtime.reset();
@@ -121,7 +122,7 @@ public abstract class TimeAuto extends LinearOpMode {
 
                 }
 
-            }
+            }*/
 
         }
 
