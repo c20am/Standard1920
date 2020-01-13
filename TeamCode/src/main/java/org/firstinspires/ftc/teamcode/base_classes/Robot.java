@@ -24,6 +24,7 @@ public abstract class Robot {
     public DcMotor frontRight;
     public DcMotor backLeft;
     public DcMotor backRight;
+
     public DcMotor pulley;
     public Servo leftHand;
     public Servo rightHand;
