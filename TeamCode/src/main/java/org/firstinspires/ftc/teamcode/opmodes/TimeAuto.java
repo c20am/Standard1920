@@ -24,11 +24,15 @@ public abstract class TimeAuto extends LinearOpMode {
         //TODO: Set times
         //Power is backwards
         //Turning is backwards
-        long FORWARD_TIME = 1000;
-        long TURN_TIME = 500;
-        long STRAFE_TIME = 500;
-        double SPEED = -.1;
+        long FORWARD_TIME = 1200;
+        //long BACKWARD_TIME = 3000;
+        long BACKWARD_TIME= 1500;
+        long TURN_TIME_1 = 1500;
+        long TURN_TIME_2 = 500;
+        long STRAFE_TIME = 1200;
+        double SPEED = -.3;
         double TURN_SPEED = .5;
+        boolean continuousLowering = true;
 
 
         robot.initAuto();
@@ -45,6 +49,19 @@ public abstract class TimeAuto extends LinearOpMode {
             //Start with claws raised
             robot.raiseClaws();
 
+            //Start with pulley raised
+            robot.raisePulley(0.5);
+            sleep(1000);
+            robot.stopPulley();
+
+            if(getAlliance() == Alliance.BLUE) {
+                robot.strafeRight(.5);
+            } else {
+                robot.strafeLeft(.5);
+            }
+            sleep(500);
+            robot.stopDriving();
+
             //Drive backwards to platform
             robot.driveBackwards(SPEED);
             sleep(FORWARD_TIME);
@@ -52,77 +69,89 @@ public abstract class TimeAuto extends LinearOpMode {
 
             //Lower claws
             robot.lowerClaws();
+            sleep(1200);
+
+            robot.leftHand.setPosition(.49);
+            robot.rightHand.setPosition(.65);
+
+            robot.lowerPulley(0.5);
             sleep(1000);
+            robot.stopPulley();
+
 
             //Drive forwards to building site
-/*            robot.driveForwards(SPEED);
-            sleep(FORWARD_TIME);
-            robot.stopDriving();*/
+            robot.driveForwards(SPEED);
+            if (continuousLowering) {
+                runtime.reset();
+                while (runtime.seconds() < BACKWARD_TIME / 1000) {
+                    robot.lowerClaws();
+                }
+            } else {
+                sleep(BACKWARD_TIME);
+            }
+            robot.stopDriving();
 
 
             //Place platform and park
-/*            while (opModeIsActive()) {
-                if (getAlliance() == Alliance.BLUE) {
-                    //Rotate counterclockwise for .5 seconds to place platform
+
+            if (getAlliance() == Alliance.BLUE) {
+                //Rotate counterclockwise for .5 seconds to place platform
+                robot.rotateCounter(TURN_SPEED);
+                if (continuousLowering) {
                     runtime.reset();
-                    while (opModeIsActive() && (runtime.seconds() < .5)) {
-                        robot.rotateCounter(TURN_SPEED);
-                        sleep(TURN_TIME);
-                        robot.stopDriving();
+                    while (runtime.seconds() < TURN_TIME_1 / 1000) {
+                        robot.lowerClaws();
                     }
-
-                    //Raise claws
-                    robot.raiseClaws();
-                    sleep(1000);
-
-                    //Rotate back
-                    runtime.reset();
-                    while (opModeIsActive() && (runtime.seconds() < .5)) {
-                        robot.rotateClockwise(TURN_SPEED);
-                        sleep(TURN_TIME);
-                        robot.stopDriving();
-                    }
-
-                    //Strafe left to park
-                    runtime.reset();
-                    while (opModeIsActive() && (runtime.seconds() < FORWARD_TIME)) {
-                        robot.strafeLeft(SPEED);
-                        sleep(STRAFE_TIME);
-                        robot.stopDriving();
-                    }
-
-                } else if (getAlliance() == Alliance.RED) {
-                    //Rotate clockwise for .5 seconds to place platform
-                    runtime.reset();
-                    while (opModeIsActive() && (runtime.seconds() < .5)) {
-                        robot.rotateClockwise(TURN_SPEED);
-                        sleep(TURN_TIME);
-                        robot.stopDriving();
-                    }
-
-                    //Raise claws
-                    robot.raiseClaws();
-                    sleep(1000);
-
-                    //Rotate back
-                    runtime.reset();
-                    while (opModeIsActive() && (runtime.seconds() < .5)) {
-                        robot.rotateCounter(TURN_SPEED);
-                        sleep(TURN_TIME);
-                        robot.stopDriving();
-                    }
-
-                    //Strafe right to park
-                    runtime.reset();
-                    while (opModeIsActive() && (runtime.seconds() < FORWARD_TIME)) {
-                        robot.strafeRight(SPEED);
-                        sleep(STRAFE_TIME);
-                        robot.stopDriving();
-                    }
-
+                } else {
+                    sleep(TURN_TIME_1);
                 }
+                robot.stopDriving();
 
-            }*/
+                //Raise claws
+                robot.raiseClaws();
+                sleep(1000);
+
+/*
+                //Rotate the rest of the wat
+                robot.rotateCounter(TURN_SPEED);
+                sleep(TURN_TIME_2);
+                robot.stopDriving(); */
+
+                //move to park
+                //robot.driveForwards(SPEED);
+                robot.strafeRight(.6);
+                sleep(STRAFE_TIME);
+                robot.stopDriving();
+
+            } else if (getAlliance() == Alliance.RED) {
+                //Rotate clockwise for .5 seconds to place platform
+                robot.rotateClockwise(TURN_SPEED);
+                if (continuousLowering) {
+                    runtime.reset();
+                    while (runtime.seconds() < TURN_TIME_1 / 1000) {
+                        robot.lowerClaws();
+                    }
+                } else {
+                    sleep(TURN_TIME_1);
+                }
+                robot.stopDriving();
+
+                //Raise claws
+                robot.raiseClaws();
+                sleep(1000);
+/*
+                //Rotate back
+                robot.rotateClockwise(TURN_SPEED);
+                sleep(TURN_TIME_2);
+                robot.stopDriving();
+*/
+                //Strafe right to park
+                //robot.driveForwards(SPEED);
+                robot.strafeLeft(.5);
+                sleep(STRAFE_TIME);
+                robot.stopDriving();
+
+            }
 
         }
 

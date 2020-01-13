@@ -16,6 +16,9 @@ public class simple extends LinearOpMode {
     private DcMotor PULLEY = null;
     private Servo left;
     private Servo right;
+    private Servo leftClaw;
+    private Servo rightClaw;
+
     controllerPos previousDrive = controllerPos.ZERO;
 
     static double turnConstant = 1;
@@ -29,8 +32,10 @@ public class simple extends LinearOpMode {
         FR = hardwareMap.get(DcMotor.class, "fr");
         BL = hardwareMap.get(DcMotor.class, "bl");
         BR = hardwareMap.get(DcMotor.class, "br");
-        PULLEY = hardwareMap.get(DcMotor.class, "pulley");
         LIFT = hardwareMap.get(DcMotor.class, "lift");
+        leftClaw = hardwareMap.get(Servo.class, "left_claw");
+        rightClaw = hardwareMap.get(Servo.class, "right_claw");
+        PULLEY = hardwareMap.get(DcMotor.class, "pulley");
         right = hardwareMap.servo.get("right_hand");
         left = hardwareMap.servo.get("left_hand");
         FL.setDirection(DcMotor.Direction.REVERSE);
@@ -49,6 +54,7 @@ public class simple extends LinearOpMode {
             moveRobot();
             setLift();
             pickup();
+            platform();
 
             telemetry.update();
             idle();
@@ -60,10 +66,10 @@ public class simple extends LinearOpMode {
         double strafe = gamepad1.left_stick_x;
         double turn = gamepad1.right_stick_x / turnConstant;
 
-        if (drive > 0.1 && (previousDrive == controllerPos.DRIVE_FOWARD || previousDrive == controllerPos.ZERO)) {
+        if (drive > 0.2 && (previousDrive == controllerPos.DRIVE_FOWARD || previousDrive == controllerPos.ZERO)) {
             previousDrive = controllerPos.DRIVE_FOWARD;
             Drive(drive);
-        } else if (drive < -0.1 && (previousDrive == controllerPos.DRIVE_BACK || previousDrive == controllerPos.ZERO)) {
+        } else if (drive < -0.2 && (previousDrive == controllerPos.DRIVE_BACK || previousDrive == controllerPos.ZERO)) {
             previousDrive = controllerPos.DRIVE_BACK;
             Drive(drive);
         } else if (strafe < -.4 && (previousDrive == controllerPos.STRAFE_RIGHT || previousDrive == controllerPos.ZERO)) {
@@ -168,6 +174,17 @@ public class simple extends LinearOpMode {
         if (gamepad2.b) {
             left.setPosition(.49);
             right.setPosition(.65);
+        }
+
+    }
+
+    public void platform() {
+        if (gamepad2.left_bumper) {
+            leftClaw.setPosition(.2);
+            rightClaw.setPosition(1);
+        } else if (gamepad2.right_bumper) {
+            leftClaw.setPosition(.9);
+            rightClaw.setPosition(.3);
         }
 
     }

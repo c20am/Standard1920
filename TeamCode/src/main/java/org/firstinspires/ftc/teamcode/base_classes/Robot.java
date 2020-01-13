@@ -25,8 +25,8 @@ public abstract class Robot {
     public DcMotor backLeft;
     public DcMotor backRight;
     public DcMotor pulley;
-    Servo leftHand;
-    Servo rightHand;
+    public Servo leftHand;
+    public Servo rightHand;
     Servo leftClaw;
     Servo rightClaw;
 
@@ -161,7 +161,6 @@ public abstract class Robot {
     public void lowerClaws() {
         leftClaw.setPosition(.2);
         rightClaw.setPosition(1);
-
     }
 
     public void raiseClaws() {
