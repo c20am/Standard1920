@@ -61,6 +61,10 @@ public class simple extends LinearOpMode {
         }
     }
 
+    public enum controllerPos {
+        STRAFE_RIGHT, STRAFE_LEFT, DRIVE_FOWARD, DRIVE_BACK, TURN_RIGHT, TURN_LEFT, ZERO;
+    }
+
     public void moveRobot() {
         double drive = gamepad1.left_stick_y;
         double strafe = gamepad1.left_stick_x;
@@ -95,12 +99,21 @@ public class simple extends LinearOpMode {
 
     }
 
+    public double readjustMotorPower(double motorPower) {
+        motorPower = Range.clip(motorPower, -1.0, 1.0);
+        if (Math.abs(motorPower) >= 0.3) {
+            return motorPower;
+        } else {
+            return 0;
+        }
+    }
+
     public void Strafe(int strafedirection) {
 
-        double FLpower = readjustMotorPower(Range.clip(-1 * strafedirection * strafepower, -1.0, 1.0));
-        double FRpower = readjustMotorPower(Range.clip(strafedirection * strafepower, -1.0, 1.0));
-        double BRpower = readjustMotorPower(Range.clip(-1 * strafedirection * strafepower, -1.0, 1.0));
-        double BLpower = readjustMotorPower(Range.clip(strafedirection * strafepower, -1.0, 1.0));
+        double FLpower = readjustMotorPower(-1 * strafedirection * strafepower);
+        double FRpower = readjustMotorPower(strafedirection * strafepower);
+        double BRpower = readjustMotorPower(-1 * strafedirection * strafepower);
+        double BLpower = readjustMotorPower(strafedirection * strafepower);
 
         FL.setPower(FLpower);
         BL.setPower(BLpower);
@@ -111,7 +124,6 @@ public class simple extends LinearOpMode {
 
     public void Drive(double drivePower) {
         drivePower = readjustMotorPower(drivePower);
-        drivePower = Range.clip(drivePower, -1.0, 1.0);
         BL.setPower(drivePower);
         FR.setPower(drivePower);
         FL.setPower(drivePower);
@@ -120,27 +132,12 @@ public class simple extends LinearOpMode {
         telemetry.update();
     }
 
-    public enum controllerPos {
-        STRAFE_RIGHT, STRAFE_LEFT, DRIVE_FOWARD, DRIVE_BACK, TURN_RIGHT, TURN_LEFT, ZERO;
-    }
-
-    public double readjustMotorPower(double motorPower) {
-        if (Math.abs(motorPower) >= 0.3) {
-            return motorPower;
-        } else {
-            return 0;
-        }
-    }
-
     public void turn(double turn) {
         double Rpower = turn;
         double Lpower = -turn;
 
         Rpower = readjustMotorPower(Rpower);
         Lpower = readjustMotorPower(Lpower);
-
-        Rpower = Range.clip(Rpower, -1.0, 1.0);
-        Lpower = Range.clip(Lpower, -1.0, 1.0);
 
         FL.setPower(Lpower);
         BL.setPower(Lpower);

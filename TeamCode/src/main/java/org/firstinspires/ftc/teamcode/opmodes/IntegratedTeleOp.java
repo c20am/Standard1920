@@ -12,17 +12,6 @@ import org.firstinspires.ftc.teamcode.base_classes.TeleBot;
 public class IntegratedTeleOp extends LinearOpMode {
     public TeleBot robot = new TeleBot(this);
 
-    private DcMotor FR = null;
-    private DcMotor FL = null;
-    private DcMotor BL = null;
-    private DcMotor BR = null;
-    private DcMotor LIFT = null;
-    private DcMotor PULLEY = null;
-    private Servo left;
-    private Servo right;
-    private Servo leftClaw;
-    private Servo rightClaw;
-
     controllerPos previousDrive = controllerPos.ZERO;
 
     static double turnConstant = 1;
@@ -43,6 +32,11 @@ public class IntegratedTeleOp extends LinearOpMode {
             idle();
         }
     }
+
+    public enum controllerPos {
+        STRAFE_RIGHT, STRAFE_LEFT, DRIVE_FOWARD, DRIVE_BACK, TURN_RIGHT, TURN_LEFT, ZERO;
+    }
+
 
     public void moveRobot() {
         double drive = gamepad1.left_stick_y;
@@ -69,29 +63,10 @@ public class IntegratedTeleOp extends LinearOpMode {
             turn(turn);
         } else {
             previousDrive = controllerPos.ZERO;
-            FL.setPower(0);
-            BL.setPower(0);
-            FR.setPower(0);
-            BR.setPower(0);
+            this.robot.stopDriving();
         }
 
 
-    }
-
-    public void Strafe(int strafedirection) {
-        double currentPower = readjustMotorPower(strafedirection * this.strafepower);
-        this.robot.strafeLeft(currentPower*strafedirection);
-    }
-
-    public void Drive(double drivePower) {
-        drivePower = readjustMotorPower(drivePower);
-        this.robot.driveForwards(drivePower);
-        telemetry.addData("Motors", "drive power (%.2f)", drivePower);
-        telemetry.update();
-    }
-
-    public enum controllerPos {
-        STRAFE_RIGHT, STRAFE_LEFT, DRIVE_FOWARD, DRIVE_BACK, TURN_RIGHT, TURN_LEFT, ZERO;
     }
 
     public double readjustMotorPower(double motorPower) {
@@ -103,6 +78,19 @@ public class IntegratedTeleOp extends LinearOpMode {
         }
     }
 
+
+    public void Strafe(int strafedirection) {
+        double currentPower = readjustMotorPower(strafedirection * this.strafepower);
+        this.robot.strafeLeft(currentPower * strafedirection);
+    }
+
+    public void Drive(double drivePower) {
+        drivePower = readjustMotorPower(drivePower);
+        this.robot.driveForwards(drivePower);
+        telemetry.addData("Motors", "drive power (%.2f)", drivePower);
+        telemetry.update();
+    }
+
     public void turn(double turn) {
         turn = readjustMotorPower(turn);
         robot.rotateClockwise(turn);
@@ -110,32 +98,32 @@ public class IntegratedTeleOp extends LinearOpMode {
 
     public void pickup() {
         if (gamepad2.right_stick_y > .5) {
-            PULLEY.setPower(.5);
+            this.robot.pulley.setPower(.5);
 
         } else if (gamepad2.right_stick_y < -.5) {
-            PULLEY.setPower(-.6);
+            this.robot.pulley.setPower(-.6);
         } else {
-            PULLEY.setPower(0);
+            this.robot.pulley.setPower(0);
         }
 
         if (gamepad2.a) {
-            left.setPosition(.16);
-            right.setPosition(.9);
+            this.robot.leftHand.setPosition(.16);
+            this.robot.rightHand.setPosition(.9);
         }
         if (gamepad2.b) {
-            left.setPosition(.49);
-            right.setPosition(.65);
+            this.robot.leftHand.setPosition(.49);
+            this.robot.rightHand.setPosition(.65);
         }
 
     }
 
     public void platform() {
         if (gamepad2.left_bumper) {
-            leftClaw.setPosition(.15);
-            rightClaw.setPosition(1);
+            this.robot.leftClaw.setPosition(.15);
+            this.robot.rightClaw.setPosition(1);
         } else if (gamepad2.right_bumper) {
-            leftClaw.setPosition(1);
-            rightClaw.setPosition(.1);
+            this.robot.leftClaw.setPosition(1);
+            this.robot.rightClaw.setPosition(.1);
         }
 
     }
