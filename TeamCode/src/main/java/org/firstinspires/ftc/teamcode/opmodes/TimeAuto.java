@@ -26,13 +26,12 @@ public abstract class TimeAuto extends LinearOpMode {
         //Turning is backwards
         long FORWARD_TIME = 1200;
         //long BACKWARD_TIME = 3000;
-        long BACKWARD_TIME= 1500;
+        long BACKWARD_TIME = 1500;
         long TURN_TIME_1 = 1500;
         long TURN_TIME_2 = 500;
         long STRAFE_TIME = 1200;
-        double SPEED = -.3;
+        double SPEED = .3;
         double TURN_SPEED = .5;
-        boolean continuousLowering = true;
 
 
         robot.initAuto();
@@ -47,14 +46,14 @@ public abstract class TimeAuto extends LinearOpMode {
         if (opModeIsActive()) {
 
             //Start with claws raised
-            robot.raiseClaws();
+            robot.openClaws();
 
             //Start with pulley raised
             robot.raisePulley(0.5);
             sleep(1000);
             robot.stopPulley();
 
-            if(getAlliance() == Alliance.BLUE) {
+            if (getAlliance() == Alliance.BLUE) {
                 robot.strafeRight(.5);
             } else {
                 robot.strafeLeft(.5);
@@ -68,7 +67,7 @@ public abstract class TimeAuto extends LinearOpMode {
             robot.stopDriving();
 
             //Lower claws
-            robot.lowerClaws();
+            robot.closeClaws();
             sleep(1200);
 
             robot.leftHand.setPosition(.49);
@@ -81,14 +80,7 @@ public abstract class TimeAuto extends LinearOpMode {
 
             //Drive forwards to building site
             robot.driveForwards(SPEED);
-            if (continuousLowering) {
-                runtime.reset();
-                while (runtime.seconds() < BACKWARD_TIME / 1000) {
-                    robot.lowerClaws();
-                }
-            } else {
-                sleep(BACKWARD_TIME);
-            }
+            sleep(BACKWARD_TIME);
             robot.stopDriving();
 
 
@@ -97,18 +89,11 @@ public abstract class TimeAuto extends LinearOpMode {
             if (getAlliance() == Alliance.BLUE) {
                 //Rotate counterclockwise for .5 seconds to place platform
                 robot.rotateCounter(TURN_SPEED);
-                if (continuousLowering) {
-                    runtime.reset();
-                    while (runtime.seconds() < TURN_TIME_1 / 1000) {
-                        robot.lowerClaws();
-                    }
-                } else {
-                    sleep(TURN_TIME_1);
-                }
+                sleep(TURN_TIME_1);
                 robot.stopDriving();
 
                 //Raise claws
-                robot.raiseClaws();
+                robot.openClaws();
                 sleep(1000);
 
 /*
@@ -126,18 +111,11 @@ public abstract class TimeAuto extends LinearOpMode {
             } else if (getAlliance() == Alliance.RED) {
                 //Rotate clockwise for .5 seconds to place platform
                 robot.rotateClockwise(TURN_SPEED);
-                if (continuousLowering) {
-                    runtime.reset();
-                    while (runtime.seconds() < TURN_TIME_1 / 1000) {
-                        robot.lowerClaws();
-                    }
-                } else {
-                    sleep(TURN_TIME_1);
-                }
+                sleep(TURN_TIME_1);
                 robot.stopDriving();
 
                 //Raise claws
-                robot.raiseClaws();
+                robot.openClaws();
                 sleep(1000);
 /*
                 //Rotate back

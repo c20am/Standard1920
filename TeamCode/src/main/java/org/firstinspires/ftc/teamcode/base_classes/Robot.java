@@ -28,8 +28,8 @@ public abstract class Robot {
     public DcMotor pulley;
     public Servo leftHand;
     public Servo rightHand;
-    Servo leftClaw;
-    Servo rightClaw;
+    public Servo leftClaw;
+    public Servo rightClaw;
 
 
     // The IMU sensor object
@@ -81,8 +81,8 @@ public abstract class Robot {
         //initializes servos
         leftHand = opMode.hardwareMap.get(Servo.class, "left_hand");
         rightHand = opMode.hardwareMap.get(Servo.class, "right_hand");
-        leftClaw = opMode.hardwareMap.get(Servo.class, "left_claw");
-        rightClaw = opMode.hardwareMap.get(Servo.class, "right_claw");
+        leftClaw = opMode.hardwareMap.get(Servo.class, "right_claw");
+        rightClaw = opMode.hardwareMap.get(Servo.class, "left_claw");
 
         //sets direction of the motors
         frontLeft.setDirection(DcMotor.Direction.REVERSE);
@@ -108,11 +108,11 @@ public abstract class Robot {
     public void driveForwards(double power) {
         power = Range.clip(power, -1.0, 1.0);
 
-        frontLeft.setPower(power);
-        frontRight.setPower(power);
-        backLeft.setPower(power);
-        backRight.setPower(power);
-        this.setForwardPower(power);
+        frontLeft.setPower(-power);
+        frontRight.setPower(-power);
+        backLeft.setPower(-power);
+        backRight.setPower(-power);
+        this.setForwardPower(-power);
         this.setLeftPower(0);
     }
 
@@ -159,14 +159,14 @@ public abstract class Robot {
         rotateClockwise(-power);
     }
 
-    public void lowerClaws() {
-        leftClaw.setPosition(.2);
+    public void openClaws() { // test positions
+        leftClaw.setPosition(.15);
         rightClaw.setPosition(1);
     }
 
-    public void raiseClaws() {
-        leftClaw.setPosition(.9);
-        rightClaw.setPosition(.3);
+    public void closeClaws() { // test positions
+        leftClaw.setPosition(1);
+        rightClaw.setPosition(.1);
 
     }
 

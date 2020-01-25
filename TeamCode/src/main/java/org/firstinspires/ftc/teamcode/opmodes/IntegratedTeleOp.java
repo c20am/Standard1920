@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.base_classes;
+package org.firstinspires.ftc.teamcode.opmodes;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
@@ -6,8 +6,12 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.Range;
 
-@TeleOp(name = "mechh", group = "Linear Opmode")
-public class simple extends LinearOpMode {
+import org.firstinspires.ftc.teamcode.base_classes.TeleBot;
+
+@TeleOp(name = "intOp", group = "Linear Opmode")
+public class IntegratedTeleOp extends LinearOpMode {
+    public TeleBot robot = new TeleBot(this);
+
     private DcMotor FR = null;
     private DcMotor FL = null;
     private DcMotor BL = null;
@@ -28,31 +32,10 @@ public class simple extends LinearOpMode {
 
     @Override
     public void runOpMode() {
-        FL = hardwareMap.get(DcMotor.class, "fl");
-        FR = hardwareMap.get(DcMotor.class, "fr");
-        BL = hardwareMap.get(DcMotor.class, "bl");
-        BR = hardwareMap.get(DcMotor.class, "br");
-        LIFT = hardwareMap.get(DcMotor.class, "lift");
-        leftClaw = hardwareMap.get(Servo.class, "right_claw");
-        rightClaw = hardwareMap.get(Servo.class, "left_claw");
-        PULLEY = hardwareMap.get(DcMotor.class, "pulley");
-        right = hardwareMap.servo.get("right_hand");
-        left = hardwareMap.servo.get("left_hand");
-        FL.setDirection(DcMotor.Direction.REVERSE);
-        BL.setDirection(DcMotor.Direction.REVERSE);
-
-        FL.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        BL.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        FR.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        BR.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        PULLEY.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        LIFT.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-
-
+        this.robot.init();
         waitForStart();
         while (opModeIsActive()) {
             moveRobot();
-            setLift();
             pickup();
             platform();
 
@@ -96,26 +79,13 @@ public class simple extends LinearOpMode {
     }
 
     public void Strafe(int strafedirection) {
-
-        double FLpower = readjustMotorPower(Range.clip(-1 * strafedirection * strafepower, -1.0, 1.0));
-        double FRpower = readjustMotorPower(Range.clip(strafedirection * strafepower, -1.0, 1.0));
-        double BRpower = readjustMotorPower(Range.clip(-1 * strafedirection * strafepower, -1.0, 1.0));
-        double BLpower = readjustMotorPower(Range.clip(strafedirection * strafepower, -1.0, 1.0));
-
-        FL.setPower(FLpower);
-        BL.setPower(BLpower);
-        FR.setPower(FRpower);
-        BR.setPower(BRpower);
-
+        double currentPower = readjustMotorPower(strafedirection * this.strafepower);
+        this.robot.strafeLeft(currentPower*strafedirection);
     }
 
     public void Drive(double drivePower) {
         drivePower = readjustMotorPower(drivePower);
-        drivePower = Range.clip(drivePower, -1.0, 1.0);
-        BL.setPower(drivePower);
-        FR.setPower(drivePower);
-        FL.setPower(drivePower);
-        BR.setPower(drivePower); //can make this an else
+        this.robot.driveForwards(drivePower);
         telemetry.addData("Motors", "drive power (%.2f)", drivePower);
         telemetry.update();
     }
@@ -125,6 +95,7 @@ public class simple extends LinearOpMode {
     }
 
     public double readjustMotorPower(double motorPower) {
+        motorPower = Range.clip(motorPower, -1.0, 1.0);
         if (Math.abs(motorPower) >= 0.3) {
             return motorPower;
         } else {
@@ -133,24 +104,14 @@ public class simple extends LinearOpMode {
     }
 
     public void turn(double turn) {
-        double Rpower = turn;
-        double Lpower = -turn;
-
-        Rpower = readjustMotorPower(Rpower);
-        Lpower = readjustMotorPower(Lpower);
-
-        Rpower = Range.clip(Rpower, -1.0, 1.0);
-        Lpower = Range.clip(Lpower, -1.0, 1.0);
-
-        FL.setPower(Lpower);
-        BL.setPower(Lpower);
-        FR.setPower(Rpower);
-        BR.setPower(Rpower);
+        turn = readjustMotorPower(turn);
+        robot.rotateClockwise(turn);
     }
 
     public void pickup() {
         if (gamepad2.right_stick_y > .5) {
             PULLEY.setPower(.5);
+
         } else if (gamepad2.right_stick_y < -.5) {
             PULLEY.setPower(-.6);
         } else {
@@ -179,13 +140,4 @@ public class simple extends LinearOpMode {
 
     }
 
-    public void setLift() {
-        if (gamepad2.right_bumper) {
-            LIFT.setPower(1);
-        } else if (gamepad2.left_bumper) {
-            LIFT.setPower(-1);
-        } else {
-            LIFT.setPower(0);
-        }
-    }
 }
